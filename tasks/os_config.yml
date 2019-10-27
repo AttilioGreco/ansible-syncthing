@@ -1,0 +1,33 @@
+- name: OS config | create syncthing group if not exist
+  group:
+    name: "{{ syncthing_group }}"
+    state: present
+    system: yes
+  when: syncthing_user_create
+
+- name: OS config | create syncthing user if not exist
+  user:
+    name: "{{ syncthing_user }}"
+    group: "{{ syncthing_group }}"
+    createhome: no
+    state: present
+    system: yes
+  when: syncthing_user_create
+
+- name: OS config | create dir tree
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+    owner: "{{ syncthing_group }}"
+    group: "{{ syncthing_user }}"
+  with_items: "{{ dir_list }}"
+
+- name: OS config | create dir tree
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: 204800
+    sysctl_set: yes
+
+- name: OS config | update runtimeproces
+  command: echo 204800 > /proc/sys/fs/inotify/max_user_watche

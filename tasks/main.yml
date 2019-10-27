@@ -1,0 +1,4 @@
+---
+- import_tasks: os_config.yml
+
+- import_tasks: install.yml

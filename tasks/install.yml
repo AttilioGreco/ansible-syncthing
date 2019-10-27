@@ -1,0 +1,61 @@
+# - name: install | Check if i nead download syncthing release
+#   stat:
+#     path: "{{ syncthing_path_base_zip }}/syncthing_v1.3.0.tar.gz"
+#   register: stat_result
+# 
+# - name: install | show debug stat_result
+#   debug:
+#     var: stat_result
+
+- name: install | download syncthing release
+  get_url:
+    url: "{{ syncthing_download_url }}"
+    dest: "{{ syncthing_path_base_zip }}/syncthing_{{ syncthing_version }}.tar.gz"
+    mode: '0660'
+  register: download_status
+
+- name: install | debug download_status
+  debug:
+    var: download_status
+
+- name: install | extract syncthing 
+  unarchive:
+    src: "{{ download_status.dest }}"
+    dest: "{{ syncthing_path_base_bin_locations }}/"
+    owner: "{{ syncthing_user }}"
+    group: "{{ syncthing_group }}"
+    remote_src: yes
+    mode: 0750
+  register: unarchive_stats
+
+- name: install | debug unarchive_stats
+  debug:
+    var: unarchive_stats
+
+- name: install | deploy systemd start unit
+  template:
+    src: syncthing.service.j2
+    dest: /etc/systemd/system/syncthing.service
+    owner: root
+    group: root
+    mode: '0550'
+  notify:
+    - daemon_reload
+    - start_syncthing
+
+- name: install | deploy systemd resume
+  template:
+    src: syncthing-resume.service.j2
+    dest: /etc/systemd/system/syncthing-resume.service
+    owner: root
+    group: root
+    mode: '0550'
+
+#- name: install | configure enable and start syncthing
+#  service:
+#    name: syncthing-resume.service
+#    state: started
+#    enalbe: yes
+#    daemon_reload: yes
+#    
+#- name: install | configure enable and start syncthing-resume

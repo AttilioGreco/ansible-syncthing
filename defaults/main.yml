@@ -1,0 +1,21 @@
+---
+# defaults vars
+syncthing_version: v1.3.0
+syncthing_download_url: "https://github.com/syncthing/syncthing/releases/download/{{ syncthing_version }}/syncthing-linux-amd64-v1.3.0.tar.gz"
+syncthing_path_base: /opt/syncthing
+syncthing_path_base_zip: "{{ syncthing_path_base }}/archive"
+syncthing_path_version: "{{ syncthing_path_base }}/{{ syncthing_version }}"
+syncthing_path_base_bin_locations: "{{ syncthing_path_version }}/bin"
+syncthing_path_base_config_locations: "/etc/syncthing"
+syncthing_path_name: syncthing-linux-amd64-{{ syncthing_version }}
+
+dir_list:
+  - "{{ syncthing_path_base }}"
+  - "{{ syncthing_path_base_zip }}"
+  - "{{ syncthing_path_version }}"
+  - "{{ syncthing_path_base_bin_locations }}"
+  - "{{ syncthing_path_base_config_locations }}"
+
+syncthing_group: 
+syncthing_user:
+syncthing_user_create: False

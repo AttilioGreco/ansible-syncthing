@@ -1,0 +1,10 @@
+---
+
+- name: run the main role
+  hosts: all
+  roles:
+    - role: ansible-syncthing
+      syncthing_group: syncthing
+      syncthing_user: syncthing
+      syncthing_user_create: True
+

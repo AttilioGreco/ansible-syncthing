@@ -1,0 +1,11 @@
+---
+# handlers file
+- name: daemon_reload
+  systemd:
+    daemon_reload: yes
+
+- name: start_syncthing
+  systemd:
+    name: syncthing.service
+    enabled: yes
+    masked: no

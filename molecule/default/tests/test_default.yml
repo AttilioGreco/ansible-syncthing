@@ -1,0 +1,24 @@
+---
+package:
+  syncthing:
+    installed: true
+port:
+  tcp:80:
+    listening: true
+    ip:
+      - 0.0.0.0
+service:
+  syncthing:
+    enabled: true
+    running: true
+user:
+  syncthing:
+    exists: true
+    groups:
+      - syncthing
+group:
+  syncthing:
+    exists: true
+process:
+  syncthing:
+    running: true
